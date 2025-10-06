@@ -12,7 +12,15 @@
                     <!-- Form -->
                     <form id="userForm" action="{{ route('users.store') }}" method="POST">
                         @csrf
-
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $err)
+                                        <li>{{ $err }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <!-- Input Nama User -->
                         <div class="form-group mb-3">
                             <label for="user_name">Name</label>
@@ -200,4 +208,13 @@
             </div>
         </div>
     </div>
+
+    @if ($errors->any())
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var myModal = new bootstrap.Modal(document.getElementById('addUserModal'));
+            myModal.show();
+        });
+    </script>
+    @endif
 </x-layout-admin>

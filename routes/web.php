@@ -24,17 +24,12 @@ Route::get('/', function () {
 })->name("login");
 
 
-
 Route::get('/api/mapel/{guru_id}', function ($guru_id) {
     $mapels = Mapel::where('guru_id', $guru_id)->get();
     return response()->json(['mapels' => $mapels]);
 });
 
 Route::get('/api/monitor',[MonitorController::class,'monitorData'])->middleware('labCheck');
-
-
-
-
 
 Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -49,6 +44,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/laporan',[LaporanController::class, 'index'])->name('laporan.index');
     Route::get('/laporan/{laporanId}',[LaporanController::class,'show'])->name('laporan.detail');
+    Route::delete('/laporan/{laporanId}',[LaporanController::class,'deleteLaporan'])->name('laporan.deleteLaporan');
 
     Route::get('/labs', [LabController::class,'index'])->middleware('labCheck');
 

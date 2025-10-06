@@ -64,9 +64,16 @@
                       <td class="align-middle text-center">
                         <span class="text-secondary text-xs font-weight-bold">{{ $laporan->mapel->name }}</span>
                       </td>
-                      <td class="align-middle">
+                      <td class="align-middle" style="display:flex">
                         <a class="btn btn-link text-info text-gradient px-3 mb-0" href="{{ route('laporan.detail', $laporan->id) }}"></i>Detail</a>
-                        <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="javascript:;"><i class="far fa-trash-alt me-2"></i></a>
+                                                
+                        <form action="{{ route('laporan.deleteLaporan', $laporan->id) }}" method="POST" style="display:inline;" class="deleteForm">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="mb-1 pc-detail p-1 rounded icon-box  text-white" style="border: 0px">
+                                <i class="fa-solid fa-trash"></i></button>
+                        </form>
+                                                
                       </td>
                     </tr>
                     @endforeach

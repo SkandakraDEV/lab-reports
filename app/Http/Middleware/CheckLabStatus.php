@@ -20,38 +20,38 @@ class CheckLabStatus
         date_default_timezone_set('Asia/Jakarta');
         $currentTime = now()->toTimeString();
 
-        // Ambil semua laporan lab yang selesai (jam_selesai < sekarang)
         $laporanSelesai = LaporanLab::where('jam_selesai', '<', $currentTime)
             ->where('exp', '=', false)
             ->orderBy('jam_selesai', 'asc')
             ->get();
-        // dd($laporanSelesai);
+
         foreach ($laporanSelesai as $laporan) {
-            $laporan->exp = true; // Mengatur nilai atribut
+            $laporan->exp = true; 
             $laporan->save();
-            // Set lab terkait menjadi "tidak digunakan"
+            
             $lab = Lab::find($laporan->lab_id);
             if ($lab) {
-                $lab->used = false;  // Atur lab menjadi "tidak digunakan"
-                $lab->user_id = null;  // Atur lab menjadi "tidak digunakan"
+                $lab->used = false;  
+                $lab->user_id = null;  
                 $lab->time_usage = null;
+                $lab->network = 0;
                 $lab->save();
             }
         }
+        // harusnya ini tidak diperlukan
+        // // Ambil semua laporan lab yang sedang berlangsung
+        // $laporanBerjalan = LaporanLab::where('jam_mulai', '<=', $currentTime)
+        //     ->where('jam_selesai', '>=', $currentTime)
+        //     ->get();
 
-        // Ambil semua laporan lab yang sedang berlangsung
-        $laporanBerjalan = LaporanLab::where('jam_mulai', '<=', $currentTime)
-            ->where('jam_selesai', '>=', $currentTime)
-            ->get();
-
-        foreach ($laporanBerjalan as $laporan) {
-            // Set lab terkait menjadi "sedang digunakan"
-            $lab = Lab::find($laporan->lab_id);
-            if ($lab) {
-                $lab->used = true;  // Atur lab menjadi "sedang digunakan"
-                $lab->save();
-            }
-        }
+        // foreach ($laporanBerjalan as $laporan) {
+        //     // Set lab terkait menjadi "sedang digunakan"
+        //     $lab = Lab::find($laporan->lab_id);
+        //     if ($lab) {
+        //         $lab->used = true;  // Atur lab menjadi "sedang digunakan"
+        //         $lab->save();
+        //     }
+        // }
         return $next($request);
     }
 }

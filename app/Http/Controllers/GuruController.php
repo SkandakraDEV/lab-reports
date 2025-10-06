@@ -23,8 +23,7 @@ class GuruController extends Controller
             'mapels' => 'required|array', // Validasi bahwa mapel adalah array
             'mapels.*' => 'required|string|max:255', // Validasi setiap mapel
         ]);
-
-        // Buat Guru baru
+         
         $guru = Guru::create(['name' => $request->guru_name]);
 
         // Tambahkan Mapel

@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     public function loginPage() {
+        if(Auth::check()){
+            return $this->redirect_after_login();
+        }
         return view('guest.login');
     }
 
@@ -19,15 +22,7 @@ class AuthController extends Controller
     
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            $user = Auth::user();
-    
-    
-            if ($user->role == 'admin') {
-                return redirect('/laporan');
-            };
-            if ($user->role == 'user') {
-                return redirect('/laporan-lab');
-            };
+            return $this->redirect_after_login();
         }
     
         return back()->withErrors([
@@ -43,6 +38,20 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('login'); 
+    }
+
+    private function redirect_after_login(){
+        $user = Auth::user();
+    
+    
+        if ($user->role == 'admin') {
+            return redirect('/laporan');
+        };
+        if ($user->role == 'user') {
+            return redirect('/laporan-lab');
+        };
+
+        return redirect('/login');
     }
 
 }

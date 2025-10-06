@@ -207,6 +207,23 @@ class LaporanController extends Controller
         return redirect('/laporan-lab')->with('success', 'Laporan berhasil disimpan');
     }
 
+    public function deleteLaporan($laporanId)
+    {   
+        $lab = LaporanLab::where('id', $laporanId)->first();
+        
+        $lab = Lab::find($lab->lab_id);
+            if ($lab) {
+                $lab->used = false;  
+                $lab->user_id = null;  
+                $lab->time_usage = null;
+                $lab->network = 0;
+                $lab->save();
+            }
+        
+        $deletedCount = LaporanLab::where('id', $laporanId)->delete();
+        
+        return redirect('/laporan');
+    }
 
     public function confirmDelete(Request $request)
     {
