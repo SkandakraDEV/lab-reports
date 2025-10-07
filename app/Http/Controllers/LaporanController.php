@@ -175,7 +175,8 @@ class LaporanController extends Controller
         Lab::find($request->session()->get('lab_id'))->update([
             'user_id' => Auth::user()->id,
             'time_usage' => $time_usage,
-            'network' => $request->network
+            'network' => $request->network,
+            'used' => 1
         ]);
 
 
