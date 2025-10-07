@@ -38,20 +38,20 @@ class CheckLabStatus
                 $lab->save();
             }
         }
-        // harusnya ini tidak diperlukan
-        // // Ambil semua laporan lab yang sedang berlangsung
-        // $laporanBerjalan = LaporanLab::where('jam_mulai', '<=', $currentTime)
-        //     ->where('jam_selesai', '>=', $currentTime)
-        //     ->get();
+        
+        // Ambil semua laporan lab yang sedang berlangsung
+        $laporanBerjalan = LaporanLab::where('jam_mulai', '<=', $currentTime)
+            ->where('jam_selesai', '>=', $currentTime)
+            ->get();
 
-        // foreach ($laporanBerjalan as $laporan) {
-        //     // Set lab terkait menjadi "sedang digunakan"
-        //     $lab = Lab::find($laporan->lab_id);
-        //     if ($lab) {
-        //         $lab->used = true;  // Atur lab menjadi "sedang digunakan"
-        //         $lab->save();
-        //     }
-        // }
+        foreach ($laporanBerjalan as $laporan) {
+            // Set lab terkait menjadi "sedang digunakan"
+            $lab = Lab::find($laporan->lab_id);
+            if ($lab) {
+                $lab->used = true;  // Atur lab menjadi "sedang digunakan"
+                $lab->save();
+            }
+        }
         return $next($request);
     }
 }
