@@ -176,7 +176,6 @@ class LaporanController extends Controller
             'user_id' => Auth::user()->id,
             'time_usage' => $time_usage,
             'network' => $request->network,
-            'used' => 1
         ]);
 
 
